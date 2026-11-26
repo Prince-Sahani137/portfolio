@@ -153,7 +153,8 @@ export default function AboutPage() {
             {tinkering.map((item) => (
               <div
                 key={item.title}
-                className="flex flex-col gap-2 rounded-xl border border-border bg-card/40 p-4"
+                data-reveal
+                className="spotlight lift flex flex-col gap-2 rounded-xl border border-border bg-card/40 p-4"
               >
                 <span className="flex size-8 items-center justify-center rounded-lg border border-border bg-background text-brand">
                   <Icon name={item.icon} className="size-4" />
@@ -211,7 +212,7 @@ export default function AboutPage() {
       </section>
 
       <section id="guestbook-cta">
-        <div className="flex flex-col items-start gap-3 rounded-xl border border-border bg-card/40 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="spotlight flex flex-col items-start gap-3 rounded-xl border border-border bg-card/40 p-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-1">
             <h2 className="font-space text-base font-medium tracking-tight">
               Made it this far?

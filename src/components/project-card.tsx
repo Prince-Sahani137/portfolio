@@ -11,9 +11,10 @@ export function ProjectCard({ project }: { project: Project }) {
       href={`/projects/${project.slug}`}
       data-sfx="tap"
       data-sfx-hover="hover"
-      className="group flex min-w-0 flex-col gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+      data-reveal
+      className="group flex min-w-0 flex-col gap-3 rounded-xl transition-transform duration-300 ease-out hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
     >
-      <div className="relative aspect-4/3 overflow-hidden rounded-xl border border-border bg-canvas">
+      <div className="tilt spotlight relative aspect-4/3 overflow-hidden rounded-xl border border-border bg-canvas transition-[border-color,box-shadow] duration-300 group-hover:border-brand/40 group-hover:shadow-[0_18px_40px_-18px_color-mix(in_oklab,var(--brand)_45%,transparent)]">
         <div
           aria-hidden="true"
           className="stripe-band absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,transparent_25%,black_95%)]"

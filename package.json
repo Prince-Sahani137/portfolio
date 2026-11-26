@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "pages:dev": "npm run build && wrangler pages dev out --d1=DB",
     "db:init:local": "wrangler d1 execute portfolio-guestbook --local --file=schema.sql",
-    "db:init:remote": "wrangler d1 execute portfolio-guestbook --remote --file=schema.sql"
+    "db:init:remote": "wrangler d1 execute portfolio-guestbook --remote --file=schema.sql",
+    "worker:dev": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "next": "16.4.6",

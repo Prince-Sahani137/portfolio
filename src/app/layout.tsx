@@ -5,6 +5,9 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { SideRails } from "@/components/side-rails";
 import { SfxProvider } from "@/components/sfx-provider";
+import { FxLayer } from "@/components/fx-layer";
+import { PointerFx } from "@/components/pointer-fx";
+import { Terminal } from "@/components/terminal";
 import { site } from "@/lib/site";
 
 const geistSans = Geist({
@@ -55,11 +58,20 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: `${site.name} — ${site.role}`,
     description: site.description,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: `${site.name} — ${site.role}`,
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: `${site.name} — ${site.role}`,
     description: site.description,
+    images: ["/og.png"],
   },
   alternates: { canonical: "/" },
 };
@@ -71,7 +83,7 @@ export const viewport: Viewport = {
   ],
 };
 
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);var r=document.documentElement;r.classList.toggle('dark',d);r.style.colorScheme=d?'dark':'light';}catch(e){}})();`;
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);var r=document.documentElement;r.classList.toggle('dark',d);r.style.colorScheme=d?'dark':'light';}catch(e){}try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('rv');setTimeout(function(){if(!r.dataset.rvReady)r.classList.remove('rv');},4000);}}catch(e){}})();`;
 
 export default function RootLayout({
   children,
@@ -96,6 +108,9 @@ export default function RootLayout({
         <Header />
         <SideRails />
         <SfxProvider />
+        <PointerFx />
+        <FxLayer />
+        <Terminal />
 
         <div className="relative z-10 mx-auto min-h-screen w-full max-w-3xl bg-background px-6 pb-4 pt-24 sm:pb-6 sm:pt-28">
           <div

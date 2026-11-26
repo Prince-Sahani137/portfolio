@@ -1,15 +1,16 @@
-// Cloudflare Pages Function -> served at /api/guestbook
-// Storage: Cloudflare D1 (binding name: DB). See schema.sql.
+// Cloudflare Worker: serves the static site (./out) and the guestbook API (/api/guestbook).
+// Static files are served directly by the assets layer; only /api/* runs this code.
+// Storage: Cloudflare D1 (binding: DB). See schema.sql.
 
 interface Env {
   DB: D1Database;
+  ASSETS: Fetcher;
 }
 
 const MAX_NAME = 40;
 const MAX_MESSAGE = 280;
 const MAX_ENTRIES = 200;
-// Max posts per IP per hour
-const RATE_LIMIT = 5;
+const RATE_LIMIT = 5; // posts per IP per hour
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -17,16 +18,16 @@ const json = (body: unknown, status = 200) =>
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
   });
 
-export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
+async function getEntries(env: Env) {
   const { results } = await env.DB.prepare(
     "SELECT id, name, message, created_at AS createdAt FROM guestbook ORDER BY created_at DESC LIMIT ?",
   )
     .bind(MAX_ENTRIES)
     .all();
   return json({ entries: results, count: results.length });
-};
+}
 
-export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
+async function postEntry(request: Request, env: Env) {
   let body: Record<string, unknown>;
   try {
     body = ((await request.json()) ?? {}) as Record<string, unknown>;
@@ -50,7 +51,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
     return json({ error: `Note must be between 1 and ${MAX_MESSAGE} characters.` }, 400);
   }
 
-  // Basic per-IP rate limit (hash of IP is stored, never the raw IP).
+  // Per-IP rate limit (only a short hash of the IP is stored).
   const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(ip));
   const ipHash = [...new Uint8Array(digest)]
@@ -83,4 +84,21 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
     .run();
 
   return json({ entry }, 201);
-};
+}
+
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
+
+    if (url.pathname === "/api/guestbook") {
+      if (request.method === "GET") return getEntries(env);
+      if (request.method === "POST") return postEntry(request, env);
+      return json({ error: "Method not allowed." }, 405);
+    }
+
+    if (url.pathname.startsWith("/api/")) return json({ error: "Not found." }, 404);
+
+    // Anything else: serve static files.
+    return env.ASSETS.fetch(request);
+  },
+} satisfies ExportedHandler<Env>;
