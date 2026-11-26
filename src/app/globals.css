@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-space: var(--font-space-grotesk), var(--font-geist-sans), ui-sans-serif,
+    system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-canvas: var(--canvas);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+
+  --animate-marquee: marquee 42s linear infinite;
+  --animate-marquee-reverse: marquee 42s linear infinite reverse;
+}
+
+:root {
+  color-scheme: light;
+
+  --background: #ffffff;
+  --canvas: #f8f7f3;
+  --foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+  --primary: #171717;
+  --primary-foreground: #fafafa;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #171717;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: #f5f5f5;
+  --accent-foreground: #171717;
+  --destructive: #e40014;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #a1a1a1;
+  --brand: #009767;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #121212;
+  --canvas: #100f0e;
+  --foreground: #fafafa;
+  --card: #171717;
+  --card-foreground: #fafafa;
+  --popover: #171717;
+  --popover-foreground: #fafafa;
+  --primary: #e5e5e5;
+  --primary-foreground: #171717;
+  --secondary: #262626;
+  --secondary-foreground: #fafafa;
+  --muted: #262626;
+  --muted-foreground: #a1a1a1;
+  --accent: #262626;
+  --accent-foreground: #fafafa;
+  --destructive: #ff6568;
+  --border: #ffffff1a;
+  --input: #ffffff26;
+  --ring: #737373;
+  --brand: #00d294;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--canvas);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--brand) 22%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Hand-drawn underline used across the site */
+.scribble {
+  position: relative;
+  white-space: nowrap;
+}
+
+.scribble::after {
+  content: "";
+  position: absolute;
+  inset-inline: -0.1em;
+  bottom: -0.14em;
+  height: 0.3em;
+  background-color: var(--brand);
+  opacity: 0.75;
+  pointer-events: none;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6.2C12 3.1 21 7.9 33 5.4S52 2.8 63 5.9s22-2.6 35-.4' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6.2C12 3.1 21 7.9 33 5.4S52 2.8 63 5.9s22-2.6 35-.4' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Diagonal hatching used in dividers and frame rails */
+.stripe-band {
+  background-image: repeating-linear-gradient(
+    315deg,
+    color-mix(in oklab, var(--foreground) 9%, transparent) 0,
+    color-mix(in oklab, var(--foreground) 9%, transparent) 1px,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 9px 9px;
+}
+
+.stripe-rail {
+  background-image: repeating-linear-gradient(
+    315deg,
+    color-mix(in oklab, var(--border) 55%, transparent) 0,
+    color-mix(in oklab, var(--border) 55%, transparent) 1px,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 18px 18px;
+  background-attachment: fixed;
+}
+
+/* Infinite stack marquees */
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-row {
+  animation: var(--animate-marquee);
+}
+
+.marquee-row[data-direction="reverse"] {
+  animation: var(--animate-marquee-reverse);
+}
+
+.marquee-track:hover .marquee-row {
+  animation-play-state: paused;
+}
+
+.marquee-fade {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+/* Project preview nudge on hover */
+.corner-peek {
+  transform-origin: 0 0;
+  translate: var(--peek-x, 0) var(--peek-y, 0);
+  scale: var(--peek-scale, 1);
+  transition:
+    translate 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .corner-peek,
+.group:focus-visible .corner-peek {
+  transition-duration: 0.5s;
+  translate: 0;
+  scale: 1;
+}
+
+/* Heatmap cells */
+.heat-cell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background-color: var(--muted);
+}
+
+/* Slightly nicer scrollbars */
+@supports (scrollbar-width: thin) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--foreground) 25%, transparent)
+      transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

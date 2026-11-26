@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://princesahani.site/sitemap.xml
