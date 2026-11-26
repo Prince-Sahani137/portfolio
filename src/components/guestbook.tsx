@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Icon } from "./icons";
-import { playFx } from "@/lib/fx-bus";
 import type { GuestbookEntry } from "@/lib/guestbook";
 
 const MAX_MESSAGE = 280;
@@ -111,7 +110,6 @@ export function Guestbook() {
       setName("");
       setMessage("");
       setSigned(true);
-      playFx("confetti", window.innerWidth / 2, window.innerHeight * 0.72);
       window.setTimeout(() => setSigned(false), 5000);
     } catch (submitError) {
       setError(

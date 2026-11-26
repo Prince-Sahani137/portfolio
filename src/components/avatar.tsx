@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Icon } from "./icons";
-import { playFxAt } from "@/lib/fx-bus";
 import { avatars } from "@/lib/site";
 
 export function Avatar({ className = "" }: { className?: string }) {
@@ -20,10 +19,7 @@ export function Avatar({ className = "" }: { className?: string }) {
       </div>
       <button
         type="button"
-        onClick={(event) => {
-          setIndex((current) => (current + 1) % avatars.length);
-          playFxAt("burst", event.currentTarget);
-        }}
+        onClick={() => setIndex((current) => (current + 1) % avatars.length)}
         data-sfx="pop"
         data-sfx-hover="tick"
         aria-label="Prince Sahani. Click to cycle through avatars."

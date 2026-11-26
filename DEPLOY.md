@@ -1,36 +1,42 @@
-# Deploy (Cloudflare Workers, Git-connected)
+# Deploy to Cloudflare Pages
 
 ## 1. Push to GitHub
 ```bash
-git init -b main && git add . && git commit -m "portfolio"
+git init && git add . && git commit -m "portfolio"
+git branch -M main
 git remote add origin https://github.com/<you>/portfolio.git
 git push -u origin main
 ```
+(`node_modules`, `.next`, `out` are git-ignored, so the repo is ~1 MB.)
 
-## 2. Create the guestbook database (from your computer, once)
+## 2. Create the guestbook database
 ```bash
-npm install
 npx wrangler login
 npx wrangler d1 create portfolio-guestbook
 ```
-Paste the printed `database_id` into `wrangler.toml` (replace REPLACE_WITH_YOUR_DATABASE_ID), then:
+Copy the printed `database_id` into `wrangler.toml`, commit, then:
 ```bash
 npm run db:init:remote
-git add . && git commit -m "add d1 id" && git push
 ```
 
-## 3. Connect the repo (Workers & Pages -> Create application -> Continue with GitHub)
+## 3. Create the Pages project
+Cloudflare Dashboard -> Workers & Pages -> Create -> Pages -> Connect to Git -> pick the repo.
+
 | Setting | Value |
 |---|---|
-| Project name | `portfolio` (must match `name` in wrangler.toml) |
-| Path | `/` |
+| Framework preset | Next.js (Static HTML Export) |
 | Build command | `npm run build` |
-| Deploy command | `npx wrangler deploy` |
-| Variable `NODE_VERSION` | `22` |
-| Variable `NEXT_PUBLIC_SITE_URL` | `https://princesahani.site` |
+| Build output directory | `out` |
+| Env var `NODE_VERSION` | `22` |
+| Env var `NEXT_PUBLIC_SITE_URL` | `https://yourdomain.com` |
 
-Click Deploy. Every `git push` to `main` redeploys.
+## 4. Bind D1 to the project
+Pages project -> Settings -> Bindings -> Add -> D1 database
+- Variable name: `DB`
+- Database: `portfolio-guestbook`
+(Add it for Production, and Preview if you want.) Then redeploy once.
 
-## 4. Custom domain
-Project -> Settings -> Domains & Routes -> Add -> Custom domain -> `princesahani.site`, then `www.princesahani.site`.
-(Delete the old A/AAAA/CNAME records for @ and www first; keep MX and TXT.)
+## 5. Custom domain
+Pages project -> Custom domains -> Set up a domain. If the domain is on Cloudflare DNS it's automatic.
+
+Every `git push` to `main` redeploys. It runs 24/7 on Cloudflare's CDN, free tier.

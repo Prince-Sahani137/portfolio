@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "./icons";
-import { PixelSprite } from "./pixel-sprite";
-import { TerminalButton } from "./terminal-button";
 import { avatars, navItems, site } from "@/lib/site";
 
 export function Footer() {
@@ -14,7 +12,7 @@ export function Footer() {
       />
       <div className="px-1 pt-10">
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-[1fr_auto_auto] sm:gap-16">
-          <div className="relative col-span-2 flex min-h-36 flex-col gap-4 sm:col-span-1">
+          <div className="col-span-2 flex flex-col gap-4 sm:col-span-1">
             <div className="flex items-center gap-3">
               <span className="relative flex size-11 flex-none overflow-hidden rounded-lg border border-border/60 shadow-sm">
                 <Image
@@ -34,16 +32,10 @@ export function Footer() {
                 </span>
               </div>
             </div>
-            <p className="max-w-[185px] text-xs leading-relaxed text-muted-foreground sm:max-w-[220px]">
+            <p className="max-w-[220px] text-xs leading-relaxed text-muted-foreground">
               Student, developer and chronic tinkerer. If you made it this far,
               say hi in the guestbook.
             </p>
-            <PixelSprite
-              effect="campfire"
-              scale={2}
-              crop={{ x: 34, y: 44, w: 60, h: 72 }}
-              className="pointer-events-none absolute -bottom-3 right-2 sm:right-8 [mask-image:radial-gradient(ellipse_52%_62%_at_50%_68%,#000_60%,transparent_100%)]"
-            />
           </div>
 
           <div className="flex flex-col gap-3">
@@ -131,17 +123,9 @@ export function Footer() {
           <p className="text-xs text-muted-foreground">
             © 2026 {site.name}. All rights reserved.
           </p>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50">
-            <TerminalButton />
-            <a
-              href="https://github.com/patch-gg/pixelfx"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-foreground"
-            >
-              pixel fx by pixelfx
-            </a>
-          </div>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50">
+            {site.githubHandle.toLowerCase()}
+          </p>
         </div>
       </div>
     </footer>

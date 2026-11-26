@@ -52,7 +52,7 @@ export function SectionHeading({
 export function ContactCta() {
   return (
     <section id="contact">
-      <div className="spotlight spotlight-light relative isolate overflow-hidden rounded-2xl border border-border bg-neutral-950">
+      <div className="relative isolate overflow-hidden rounded-2xl border border-border bg-neutral-950">
         <div
           aria-hidden="true"
           className="absolute inset-0 -z-20 bg-[radial-gradient(130%_140%_at_15%_0%,#0f766e_0%,#0b1220_52%,#05070d_100%)]"
